@@ -5,11 +5,21 @@
 # MAGIC このノートブックは **AIデータ加工ハンズオンが始まる前に実行してください**。
 # MAGIC ご自身の Databricks Free Edition 環境にサンプルデータ（5テーブル）が作成されます。
 # MAGIC
+# MAGIC ## ⚠️ 事前設定: コンピュートの選択
+# MAGIC
+# MAGIC **ノートブック右上の接続先を「サーバーレス」に変更してください**。
+# MAGIC
+# MAGIC - ❌ `Serverless Starter Warehouse`（SQLウェアハウス）→ Python が動かない
+# MAGIC - ✅ `サーバーレス`（ノートブック用コンピュート）→ Python も SQL も動く
+# MAGIC
+# MAGIC SQLウェアハウスのままだと `Unsupported cell during execution. SQL warehouses only support executing SQL cells.` というエラーが出ます。
+# MAGIC
 # MAGIC ## 実行方法
 # MAGIC
-# MAGIC 1. 上部の **「すべてを実行」** をクリック
-# MAGIC 2. 実行完了まで約2〜3分
-# MAGIC 3. `workspace.bootcamp_osaka` スキーマに5つのテーブルが作成されます
+# MAGIC 1. 上記のとおり、接続先を **「サーバーレス」** に変更
+# MAGIC 2. 上部の **「すべてを実行」** をクリック
+# MAGIC 3. 実行完了まで約2〜3分
+# MAGIC 4. `workspace.bootcamp_osaka` スキーマに5つのテーブルが作成されます
 # MAGIC
 # MAGIC ## 作成するデータ
 # MAGIC

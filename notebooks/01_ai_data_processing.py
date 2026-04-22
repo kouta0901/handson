@@ -18,6 +18,13 @@
 # MAGIC このセッションは **SQLエディター** で実施します。
 # MAGIC 左メニュー **「SQLエディター」** を開いてください。
 # MAGIC SQLからLLMを呼び出せる体験がより直接的に伝わります。
+# MAGIC
+# MAGIC ### このノートブック自体で実行する場合
+# MAGIC
+# MAGIC ノートブック右上の接続先を **「サーバーレス」** に変更してください。
+# MAGIC
+# MAGIC - ❌ `Serverless Starter Warehouse` → 一部の Python セルが動かない
+# MAGIC - ✅ `サーバーレス` → 全セル実行可能
 
 # COMMAND ----------
 

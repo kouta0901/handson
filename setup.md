@@ -93,6 +93,14 @@ databricks-japan-bootcamp/
 
 ## トラブルシューティング
 
+### `Unsupported cell during execution. SQL warehouses only support executing SQL cells.` エラー
+
+ノートブックの接続先が **SQLウェアハウス** になっています。Python が実行できないため、以下に切り替えてください。
+
+1. ノートブック右上の接続先（例: `Serverless Starter Warehouse`）をクリック
+2. 「**サーバーレス**」（ノートブック用コンピュート）を選択
+3. セルを再実行
+
 ### 「サーバーレスが見つからない」と表示される
 
 ワークスペース作成直後は、サーバーレスコンピュートの初期化に時間がかかることがあります。

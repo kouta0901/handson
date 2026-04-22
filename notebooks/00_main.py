@@ -19,6 +19,13 @@
 # MAGIC - 各ステップの指示に従って、指定のツールを左メニューから開きます
 # MAGIC - 完了したらこのノートブックに戻ってきて次のステップへ
 # MAGIC - **Genie Code** を積極的に使ってください（`Cmd+I` / `Ctrl+I` で起動）
+# MAGIC
+# MAGIC ## ⚠️ 事前設定: コンピュートの選択
+# MAGIC
+# MAGIC **ノートブック右上の接続先を「サーバーレス」に変更してください**。
+# MAGIC
+# MAGIC - ❌ `Serverless Starter Warehouse`（SQLウェアハウス）→ Python が動かない
+# MAGIC - ✅ `サーバーレス`（ノートブック用コンピュート）→ Python も SQL も動く
 
 # COMMAND ----------
 
