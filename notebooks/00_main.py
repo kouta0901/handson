@@ -11,7 +11,7 @@
 # MAGIC |---|---|---|---|
 # MAGIC | Step 1 | **ノートブック**（ここ） | 20分 | Bronze → Silver を作る |
 # MAGIC | 休憩 | — | 15分 | |
-# MAGIC | Step 2 | **ジョブとパイプライン** | 10分 | Lakeflow Jobs で自動化 |
+# MAGIC | Step 2 | **データエンジニアリング** | 10分 | Lakeflow Jobs で自動化 |
 # MAGIC | Step 3 | **カタログ + Genie** | 10分 | Gold作成・結果確認 |
 # MAGIC | Step 4 | **SQLエディター** | 5分 | Brick EC を SQL で分析 |
 # MAGIC
@@ -305,7 +305,7 @@ display(spark.sql(f"DESCRIBE HISTORY workspace.{my_schema}.iot_silver"))
 # MAGIC
 # MAGIC ## 2-1. ジョブ作成画面を開く
 # MAGIC
-# MAGIC 1. 左メニューから **「ジョブとパイプライン」（Jobs & Pipelines）** をクリック
+# MAGIC 1. 左メニューから **「データエンジニアリング」** → **「ジョブ」** をクリック
 # MAGIC 2. 右上の **「作成」→「ジョブ」**（Create → Job）をクリック
 # MAGIC
 # MAGIC ## 2-2. ジョブ名を設定
@@ -410,10 +410,10 @@ display(spark.sql(f"SELECT * FROM workspace.{my_schema}.iot_gold"))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC # Step 4: SQLエディターで Brick EC を分析
+# MAGIC # Step 4: SQLエディターで自分のデータを分析
 # MAGIC
-# MAGIC 最後に、前半で使った Brick EC データを SQLエディターでも触ってみます。
-# MAGIC Genie で見たのと同じデータを、今度は SQL で直接分析します。
+# MAGIC 最後に、自分で作った IoT の Gold テーブルを SQLエディターでも触ってみます。
+# MAGIC ノートブック以外に **SQLエディター** というツールもあることを体験します。
 # MAGIC
 # MAGIC ## 4-1. SQLエディターを開く
 # MAGIC
@@ -422,38 +422,33 @@ display(spark.sql(f"SELECT * FROM workspace.{my_schema}.iot_gold"))
 # MAGIC ## 4-2. SQLで分析してみる
 # MAGIC
 # MAGIC 以下のクエリをコピペして実行してください（`Shift + Enter`）。
+# MAGIC **`<my_schema>` は自分のスキーマ名に置き換えてください**（例: `bc_yourname`）。
 # MAGIC
-# MAGIC ### 例1: カテゴリ別売上
+# MAGIC ### 例1: Gold テーブルの中身を見る
 # MAGIC ```sql
-# MAGIC SELECT
-# MAGIC   p.category,
-# MAGIC   SUM(t.amount) AS total_sales
-# MAGIC FROM workspace.bootcamp_osaka.gold_transactions t
-# MAGIC JOIN workspace.bootcamp_osaka.gold_products p
-# MAGIC   ON t.product_id = p.product_id
-# MAGIC GROUP BY p.category
-# MAGIC ORDER BY total_sales DESC;
+# MAGIC SELECT * FROM workspace.<my_schema>.iot_gold;
 # MAGIC ```
 # MAGIC
-# MAGIC ### 例2: 地域別ユーザー数
+# MAGIC ### 例2: デバイスタイプ別の合計読み取り件数
 # MAGIC ```sql
 # MAGIC SELECT
-# MAGIC   region,
-# MAGIC   COUNT(*) AS user_count
-# MAGIC FROM workspace.bootcamp_osaka.gold_users
-# MAGIC GROUP BY region
-# MAGIC ORDER BY user_count DESC;
+# MAGIC   device_type,
+# MAGIC   SUM(reading_count) AS total_readings,
+# MAGIC   SUM(critical_count) AS total_critical
+# MAGIC FROM workspace.<my_schema>.iot_gold
+# MAGIC GROUP BY device_type
+# MAGIC ORDER BY total_critical DESC;
 # MAGIC ```
 # MAGIC
-# MAGIC ### 例3: 会員ランク別の平均購買金額
+# MAGIC ### 例3: critical が多い組み合わせ Top 3
 # MAGIC ```sql
 # MAGIC SELECT
-# MAGIC   u.membership_tier,
-# MAGIC   ROUND(AVG(t.amount), 0) AS avg_amount,
-# MAGIC   COUNT(DISTINCT t.user_id) AS active_users
-# MAGIC FROM workspace.bootcamp_osaka.gold_transactions t
-# MAGIC JOIN workspace.bootcamp_osaka.gold_users u ON t.user_id = u.user_id
-# MAGIC GROUP BY u.membership_tier;
+# MAGIC   device_type,
+# MAGIC   location,
+# MAGIC   critical_count
+# MAGIC FROM workspace.<my_schema>.iot_gold
+# MAGIC ORDER BY critical_count DESC
+# MAGIC LIMIT 3;
 # MAGIC ```
 # MAGIC
 # MAGIC ## 4-3. Genie Code を SQLエディターで使う（任意）
@@ -461,7 +456,7 @@ display(spark.sql(f"SELECT * FROM workspace.{my_schema}.iot_gold"))
 # MAGIC SQLエディターで `Cmd+I`（Mac）/ `Ctrl+I`（Win）を押すと Genie Code が起動します。
 # MAGIC 自然言語で指示すると SQL を生成してくれます：
 # MAGIC
-# MAGIC > 「30代の東京ユーザーの購買金額合計を出して」
+# MAGIC > 「Silver テーブルから、1時間ごとの平均温度を計算して」
 # MAGIC
 # MAGIC ---
 # MAGIC
@@ -469,3 +464,6 @@ display(spark.sql(f"SELECT * FROM workspace.{my_schema}.iot_gold"))
 # MAGIC
 # MAGIC 次は **AIでのデータ加工** に進みます。
 # MAGIC `01_ai_data_processing.py` を開いてください。
+# MAGIC
+# MAGIC ※ AIデータ加工では別のサンプルデータ（Brick EC）を使います。
+# MAGIC `setup_sample_data.py` を先に実行しておいてください。
